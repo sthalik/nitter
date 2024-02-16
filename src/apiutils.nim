@@ -130,7 +130,8 @@ template retry(bod) =
   try:
     bod
   except RateLimitError:
-    echo "[accounts] Rate limited, retrying ", api, " request..."
+    let currentTime = now().format("yyyy-MM-dd HH:mm:ss")
+    echo currentTime, " - [accounts] Rate limited, retrying ", api, " request..."
     bod
 
 proc fetch*(url: Uri; api: Api): Future[JsonNode] {.async.} =
