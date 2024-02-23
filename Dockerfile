@@ -1,7 +1,7 @@
-FROM nimlang/nim:2.0.0-alpine-regular as nim
+FROM alpine:3.18 as nim
 LABEL maintainer="setenforce@protonmail.com"
 
-RUN apk --no-cache add libsass-dev pcre
+RUN apk --no-cache add libsass-dev pcre gcc git libc-dev "nim=1.6.14-r0" "nimble=0.13.1-r2"
 
 WORKDIR /src/nitter
 
@@ -13,9 +13,9 @@ RUN nimble build -d:danger -d:lto -d:strip \
     && nimble scss \
     && nimble md
 
-FROM alpine:latest
+FROM alpine:3.18
 WORKDIR /src/
-RUN apk --no-cache add pcre ca-certificates
+RUN apk --no-cache add pcre ca-certificates openssl1.1-compat
 COPY --from=nim /src/nitter/nitter ./
 COPY --from=nim /src/nitter/nitter.example.conf ./nitter.conf
 COPY --from=nim /src/nitter/public ./public
