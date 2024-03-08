@@ -27,3 +27,4 @@ kill_timeout = '5s'
 [mounts]
   source="nitter"
   destination="/nitter-data"
+  initial_size="1gb"
