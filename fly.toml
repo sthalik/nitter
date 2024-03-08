@@ -23,3 +23,7 @@ kill_timeout = '5s'
   memory = '256mb'
   cpu_kind = 'shared'
   cpus = 1
+
+[mounts]
+  source="nitter"
+  destination="/nitter-data"
