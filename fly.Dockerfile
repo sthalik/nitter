@@ -29,7 +29,6 @@ COPY fly.Procfile ./Procfile
 COPY fly.redis.conf ./redis.conf
 COPY fly.nitter.conf ./nitter.conf
 COPY guest_accounts.json ./
-RUN mkdir -p /nitter-data/redis
 EXPOSE 8080
 # RUN adduser -h /src/ -D -s /bin/sh nitter
 # USER nitter
