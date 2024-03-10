@@ -20,7 +20,7 @@ RUN go install github.com/DarthSim/overmind/v2@latest
 FROM alpine:3.18
 WORKDIR /src/
 # RUN apk --no-cache add pcre ca-certificates openssl1.1-compat
-RUN apk --no-cache add pcre ca-certificates openssl1.1-compat redis tmux
+RUN apk --no-cache add pcre ca-certificates openssl1.1-compat redis tmux nginx
 COPY --from=nim /src/nitter/nitter ./
 # COPY --from=nim /src/nitter/nitter.example.conf ./nitter.conf
 COPY --from=nim /src/nitter/public ./public
@@ -29,6 +29,8 @@ COPY fly.Procfile ./Procfile
 COPY fly.redis.conf ./redis.conf
 COPY fly.nitter.conf ./nitter.conf
 COPY guest_accounts.json ./
+COPY fly.nginx.conf /etc/nginx/http.d/nitter.conf
+COPY .htpasswd /etc/nginx/.htpasswd
 EXPOSE 8080
 # RUN adduser -h /src/ -D -s /bin/sh nitter
 # USER nitter
