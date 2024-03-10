@@ -14,4 +14,4 @@ guest_accounts.json*
 dump.rdb
 fly.nitter.conf
 .htpasswd
-fly.nginx.conf
+fly.nginx-site.conf

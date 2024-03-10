@@ -29,7 +29,8 @@ COPY fly.Procfile ./Procfile
 COPY fly.redis.conf ./redis.conf
 COPY fly.nitter.conf ./nitter.conf
 COPY guest_accounts.json ./
-COPY fly.nginx.conf /etc/nginx/http.d/nitter.conf
+COPY fly.nginx.conf /etc/nginx/nginx.conf
+COPY fly.nginx-site.conf /etc/nginx/conf.d/nitter.conf
 COPY .htpasswd /etc/nginx/.htpasswd
 EXPOSE 8080
 # RUN adduser -h /src/ -D -s /bin/sh nitter
