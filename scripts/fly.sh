@@ -2,7 +2,7 @@
 set -e
 
 echo Running auth...
-python /src/scripts/auth.py /src/guest_accounts.json
+python /src/scripts/auth.py /nitter-data/guest_accounts.json
 
 echo Waiting for redis...
 counter=0

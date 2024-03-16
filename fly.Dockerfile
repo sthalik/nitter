@@ -33,6 +33,8 @@ COPY scripts/ ./scripts/
 COPY fly.nginx.conf /etc/nginx/nginx.conf
 COPY fly.nginx-site.conf /etc/nginx/conf.d/nitter.conf
 COPY .htpasswd /etc/nginx/.htpasswd
+# Assumes /nitter-data is already volume mounted from docker or PaaS
+RUN mkdir -p /nitter-data/redis
 EXPOSE 8080
 # RUN adduser -h /src/ -D -s /bin/sh nitter
 # USER nitter

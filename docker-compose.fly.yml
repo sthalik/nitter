@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  nitter:
+    build:
+      context: .
+      dockerfile: fly.Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - nitter-data:/nitter-data
+    environment:
+      - NITTER_ACCOUNTS_FILE=/nitter-data/guest_accounts.json
+    env_file:
+      # expecting TWITER_USERNAME and TWITTER_PASSWORD from .env file
+      - .env
+volumes:
+  nitter-data:

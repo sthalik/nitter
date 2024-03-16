@@ -15,3 +15,4 @@ dump.rdb
 fly.nitter.conf
 .htpasswd
 fly.nginx-site.conf
+.env
