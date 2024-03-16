@@ -12,9 +12,6 @@ kill_timeout = '5s'
 
 [env]
   NITTER_ACCOUNTS_FILE = "/nitter-data/guest_accounts.json"
-  INSTANCE_TITLE = "nitter.fly.dev"
-  INSTANCE_THEME = "Twitter Dark"
-  INSTANCE_INFINITE_SCROLL = "1"
 
 [http_service]
   internal_port = 8081

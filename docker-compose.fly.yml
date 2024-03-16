@@ -13,13 +13,13 @@ services:
     environment:
       # shuold be included for custom paths
       - NITTER_ACCOUNTS_FILE=/nitter-data/guest_accounts.json
-      # optional instance custmizations
+      # optional instance custmizations from env
       - INSTANCE_TITLE=Custom title
       - INSTANCE_THEME=Twitter Dark
       - INSTANCE_INFINITE_SCROLL=1
     env_file:
       # should require from env
-      # TWITER_USERNAME
+      # TWITTER_USERNAME
       # TWITTER_PASSWORD
       # INSTANCE_RSS_PASSWORD
       # INSTANCE_WEB_USERNAME

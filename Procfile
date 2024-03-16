@@ -1,3 +1,3 @@
 web: /src/scripts/fly.sh
-redis: redis-server /src/redis.conf
+redis: /src/scripts/redis.sh
 nginx: /src/scripts/nginx.sh

@@ -32,8 +32,6 @@ COPY scripts/ ./scripts/
 COPY scripts/assets/redis.conf ./redis.conf
 COPY scripts/assets/nginx.conf /etc/nginx/nginx.conf
 RUN mkdir -p /etc/nginx/conf.d
-# Assumes /nitter-data is already volume mounted from docker or PaaS
-RUN mkdir -p /nitter-data/redis
 # fly end
 EXPOSE 8081
 # RUN adduser -h /src/ -D -s /bin/sh nitter
