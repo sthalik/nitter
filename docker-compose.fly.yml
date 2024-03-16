@@ -8,11 +8,17 @@ services:
     ports:
       - "8080:8080"
     volumes:
+      # you should map this in PaaS
       - nitter-data:/nitter-data
     environment:
+      # required for custom paths
       - NITTER_ACCOUNTS_FILE=/nitter-data/guest_accounts.json
+      # optional instance custmizations
+      - INSTANCE_TITLE=Custom title
+      - INSTANCE_THEME=Twitter Dark
+      - INSTANCE_INFINITE_SCROLL=1
     env_file:
-      # expecting TWITER_USERNAME and TWITTER_PASSWORD from .env file
+      # required TWITER_USERNAME and TWITTER_PASSWORD from .env file
       - .env
 volumes:
   nitter-data:
