@@ -30,7 +30,7 @@ COPY --from=overmind /root/go/bin/overmind ./
 COPY Procfile ./Procfile
 COPY scripts/ ./scripts/
 COPY scripts/assets/redis.conf ./redis.conf
-COPY fly.nginx.conf /etc/nginx/nginx.conf
+COPY scripts/assets/nginx.conf /etc/nginx/nginx.conf
 COPY fly.nginx-site.conf /etc/nginx/conf.d/nitter.conf
 COPY .htpasswd /etc/nginx/.htpasswd
 # Assumes /nitter-data is already volume mounted from docker or PaaS
