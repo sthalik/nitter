@@ -161,9 +161,10 @@ def parse_auth_file(auth_file: str) -> bool:
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 4:
-        print("Usage: python3 auth.py <output_file> <username> <password>")
+    if len(sys.argv) != 2:
+        print("Usage: python3 auth.py <output_file>")
         sys.exit(1)
+
     output_file = sys.argv[1]
     if os.path.exists(output_file):
         print(f"Validating auth file {output_file}")
@@ -173,9 +174,18 @@ if __name__ == "__main__":
         else:
             print(f"Auth file {output_file} is invalid. Please remove and rerun.")
             sys.exit(1)
-    username = sys.argv[2]
-    password = sys.argv[3]
+
+    username = os.getenv("TWITTER_USERNAME")
+    if not username:
+        print("Please set environment variable TWITTER_USERNAME")
+        sys.exit(1)
+    password = os.getenv("TWITTER_PASSWORD")
+    if not password:
+        print("Please set environment variable TWITTER_PASSWORD")
+        sys.exit(1)
+
     auth_res = auth(username, password)
+
     if auth_res is None:
         print("Failed authentication. You might have entered the wrong username/password or enabled MFA. Please rerun with environment variable DEBUG=1 for debugging.")
         sys.exit(1)
