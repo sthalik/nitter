@@ -1,3 +1,3 @@
-web: sleep 10 && /src/nitter
+web: /src/scripts/fly.sh
 redis: redis-server
 nginx: nginx

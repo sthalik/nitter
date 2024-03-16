@@ -36,4 +36,4 @@ COPY .htpasswd /etc/nginx/.htpasswd
 EXPOSE 8080
 # RUN adduser -h /src/ -D -s /bin/sh nitter
 # USER nitter
-CMD ./overmind s
+CMD ["bash", "-c", "/src/scripts/dump_env.sh && /src/overmind s"]
