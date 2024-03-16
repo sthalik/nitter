@@ -20,7 +20,8 @@ RUN go install github.com/DarthSim/overmind/v2@latest
 FROM alpine:3.18
 WORKDIR /src/
 # RUN apk --no-cache add pcre ca-certificates openssl1.1-compat
-RUN apk --no-cache add pcre ca-certificates openssl1.1-compat redis tmux nginx
+RUN apk --no-cache add pcre ca-certificates openssl1.1-compat bash redis tmux nginx python3 py3-pip
+RUN pip install requests
 COPY --from=nim /src/nitter/nitter ./
 # COPY --from=nim /src/nitter/nitter.example.conf ./nitter.conf
 COPY --from=nim /src/nitter/public ./public
@@ -28,7 +29,7 @@ COPY --from=overmind /root/go/bin/overmind ./
 COPY fly.Procfile ./Procfile
 COPY fly.redis.conf ./redis.conf
 COPY fly.nitter.conf ./nitter.conf
-COPY guest_accounts.json ./
+COPY scripts/ ./scripts/
 COPY fly.nginx.conf /etc/nginx/nginx.conf
 COPY fly.nginx-site.conf /etc/nginx/conf.d/nitter.conf
 COPY .htpasswd /etc/nginx/.htpasswd
