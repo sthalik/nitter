@@ -7,8 +7,14 @@ kill_timeout = '5s'
 
 [[mounts]]
   source = 'nitter'
-  destination = '/nitter-data/redis'
+  destination = '/nitter-data'
   initial_size = '1gb'
+
+[env]
+  NITTER_ACCOUNTS_FILE = "/nitter-data/guest_accounts.json"
+  INSTANCE_TITLE = "nitter.fly.dev"
+  INSTANCE_THEME = "Twitter Dark"
+  INSTANCE_INFINITE_SCROLL = "1"
 
 [http_service]
   internal_port = 8081
