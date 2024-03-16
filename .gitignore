@@ -12,6 +12,4 @@ nitter
 nitter.conf
 guest_accounts.json*
 dump.rdb
-.htpasswd
-fly.nginx-site.conf
 .env

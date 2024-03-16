@@ -21,7 +21,7 @@ FROM alpine:3.18
 WORKDIR /src/
 # RUN apk --no-cache add pcre ca-certificates openssl1.1-compat
 RUN apk --no-cache add pcre ca-certificates openssl1.1-compat bash redis tmux nginx python3 py3-pip
-RUN pip install requests
+RUN pip install requests passlib
 COPY --from=nim /src/nitter/nitter ./
 # COPY --from=nim /src/nitter/nitter.example.conf ./nitter.conf
 COPY --from=nim /src/nitter/public ./public
@@ -31,12 +31,11 @@ COPY Procfile ./Procfile
 COPY scripts/ ./scripts/
 COPY scripts/assets/redis.conf ./redis.conf
 COPY scripts/assets/nginx.conf /etc/nginx/nginx.conf
-COPY fly.nginx-site.conf /etc/nginx/conf.d/nitter.conf
-COPY .htpasswd /etc/nginx/.htpasswd
+RUN mkdir -p /etc/nginx/conf.d
 # Assumes /nitter-data is already volume mounted from docker or PaaS
 RUN mkdir -p /nitter-data/redis
 # fly end
-EXPOSE 8080
+EXPOSE 8081
 # RUN adduser -h /src/ -D -s /bin/sh nitter
 # USER nitter
 CMD ["bash", "-c", "/src/scripts/dump_env.sh && /src/overmind s"]

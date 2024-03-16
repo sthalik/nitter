@@ -6,19 +6,24 @@ services:
       context: .
       dockerfile: fly.Dockerfile
     ports:
-      - "8080:8080"
+      - "8081:8081"
     volumes:
-      # you should map this in PaaS
+      # should map this in PaaS
       - nitter-data:/nitter-data
     environment:
-      # required for custom paths
+      # shuold be included for custom paths
       - NITTER_ACCOUNTS_FILE=/nitter-data/guest_accounts.json
       # optional instance custmizations
       - INSTANCE_TITLE=Custom title
       - INSTANCE_THEME=Twitter Dark
       - INSTANCE_INFINITE_SCROLL=1
     env_file:
-      # required TWITER_USERNAME and TWITTER_PASSWORD from .env file
+      # should require from env
+      # TWITER_USERNAME
+      # TWITTER_PASSWORD
+      # INSTANCE_RSS_PASSWORD
+      # INSTANCE_WEB_USERNAME
+      # INSTANCE_WEB_PASSWORD
       - .env
 volumes:
   nitter-data:
