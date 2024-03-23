@@ -63,7 +63,7 @@ flyctl secrets set --detach INSTANCE_TITLE=<your instance title>
 * Optional: Default theme of the web UI. Available options are `Black`, `Dracula`, `Mastodon`, `Nitter`, `Pleroma`, `Twitter` and `Twitter Dark`.
 
 ```
-flyctl secrets set --detach INSTANCE_TITLE=<your instance default theme>
+flyctl secrets set --detach INSTANCE_THEME=<your instance default theme>
 ```
 
 * Optional: Whether to enable infinite scrolling. Enabling this option will load Javascript on the web UI.

@@ -17,6 +17,13 @@ services:
       - INSTANCE_TITLE=Custom title
       - INSTANCE_THEME=Twitter Dark
       - INSTANCE_INFINITE_SCROLL=1
+      # optional for setups without redis and/or ng1inx
+      # - DISABLE_REDIS=1
+      # - DISABLE_NGINX=1
+      # optional for setups without redis, e.g. external redis connection info
+      # - REDIS_HOST=nitter-redis
+      # - REDIS_PORT=6379
+      # - REDIS_PASSWORD=
     env_file:
       # should require from env
       # TWITTER_USERNAME
