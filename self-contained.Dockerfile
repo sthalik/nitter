@@ -25,14 +25,14 @@ RUN pip install requests passlib
 COPY --from=nim /src/nitter/nitter ./
 # COPY --from=nim /src/nitter/nitter.example.conf ./nitter.conf
 COPY --from=nim /src/nitter/public ./public
+# self-contained bits start
 COPY --from=overmind /root/go/bin/overmind ./
-# fly start
 COPY scripts/ ./scripts/
 COPY scripts/assets/redis.conf ./redis.conf
 COPY scripts/assets/nginx.conf /etc/nginx/nginx.conf
 RUN mkdir -p /etc/nginx/conf.d
-# fly end
+# self-contained bits end
 EXPOSE 8081
 # RUN adduser -h /src/ -D -s /bin/sh nitter
 # USER nitter
-CMD ["bash", "-c", "/src/scripts/dump_env.sh && /src/overmind s"]
+CMD ["bash", "-c", "/src/scripts/dump_env_and_procfile.sh && /src/overmind s"]

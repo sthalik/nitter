@@ -27,7 +27,7 @@ echo INSTANCE_WEB_PASSWORD=$INSTANCE_WEB_PASSWORD >> /src/.env
 
 echo Writing Procfile...
 
-echo "web: /src/scripts/fly.sh" > /src/Procfile
+echo "web: /src/scripts/nitter.sh" > /src/Procfile
 
 if [ "$DISABLE_REDIS" != "1" ]; then
   echo "redis: /src/scripts/redis.sh" >> /src/Procfile
