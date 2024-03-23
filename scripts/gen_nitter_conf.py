@@ -10,7 +10,7 @@ REDIS_PASSWORD_PLZ_CHANGE = "[REDIS_PASSWORD_PLZ_CHANGE]"
 THEME_PLZ_CHANGE = "[THEME_PLZ_CHANGE]"
 INFINITE_SCROLL_PLZ_CHANGE = "[INFINITE_SCROLL_PLZ_CHANGE]"
 
-TEMPLATE="""[Server]
+TEMPLATE = """[Server]
 hostname = "[HOSTNAME_PLZ_CHANGE]"  # for generating links, change this to your own domain/ip
 title = "[TITLE_PLZ_CHANGE]"
 address = "0.0.0.0"
@@ -56,6 +56,14 @@ hlsPlayback = false
 infiniteScroll = [INFINITE_SCROLL_PLZ_CHANGE]
 """
 
+
+def getenv_treat_empty_string_as_none(key: str, default: str) -> str:
+    value = os.getenv(key)
+    if not value:
+        return default
+    return value
+
+
 def main() -> str:
     # hostname
     hostname = "localhost:8080"
@@ -63,13 +71,13 @@ def main() -> str:
         hostname = f"{os.getenv('FLY_APP_NAME')}.fly.dev"
     
     # redis connection info
-    redis_host = os.getenv("REDIS_HOST", "localhost")
-    redis_port = os.getenv("REDIS_PORT", "6379")
-    redis_password = os.getenv("REDIS_PASSWORD", "")
+    redis_host = getenv_treat_empty_string_as_none("REDIS_HOST", "localhost")
+    redis_port = getenv_treat_empty_string_as_none("REDIS_PORT", "6379")
+    redis_password = getenv_treat_empty_string_as_none("REDIS_PASSWORD", "")
 
     # other customizations
-    title = os.getenv("INSTANCE_TITLE", "My Nitter instance")
-    theme = os.getenv("INSTANCE_THEME", "Nitter")
+    title = getenv_treat_empty_string_as_none("INSTANCE_TITLE", "My Nitter instance")
+    theme = getenv_treat_empty_string_as_none("INSTANCE_THEME", "Nitter")
     infinite_scroll = "true" if os.getenv("INSTANCE_INFINITE_SCROLL") == "1" else "false"
 
     return TEMPLATE \
