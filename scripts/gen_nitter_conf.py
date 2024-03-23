@@ -69,6 +69,8 @@ def main() -> str:
     hostname = "localhost:8080"
     if os.getenv("FLY_APP_NAME"):
         hostname = f"{os.getenv('FLY_APP_NAME')}.fly.dev"
+    elif os.getenv("INSTANCE_HOSTNAME"):
+        hostname = os.getenv("INSTANCE_HOSTNAME")
     
     # redis connection info
     redis_host = getenv_treat_empty_string_as_none("REDIS_HOST", "localhost")
