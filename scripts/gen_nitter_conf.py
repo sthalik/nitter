@@ -4,6 +4,9 @@ import sys
 
 HOSTNAME_PLZ_CHANGE = "[HOSTNAME_PLZ_CHANGE]"
 TITLE_PLZ_CHANGE = "[TITLE_PLZ_CHANGE]"
+REDIS_HOST_PLZ_CHANGE = "[REDIS_HOST_PLZ_CHANGE]"
+REDIS_PORT_PLZ_CHANGE = "[REDIS_PORT_PLZ_CHANGE]"
+REDIS_PASSWORD_PLZ_CHANGE = "[REDIS_PASSWORD_PLZ_CHANGE]"
 THEME_PLZ_CHANGE = "[THEME_PLZ_CHANGE]"
 INFINITE_SCROLL_PLZ_CHANGE = "[INFINITE_SCROLL_PLZ_CHANGE]"
 
@@ -19,9 +22,9 @@ staticDir = "./public"
 [Cache]
 listMinutes = 240  # how long to cache list info (not the tweets, so keep it high)
 rssMinutes = 10  # how long to cache rss queries
-redisHost = "localhost"  # Change to "nitter-redis" if using docker-compose
-redisPort = 6379
-redisPassword = ""
+redisHost = "[REDIS_HOST_PLZ_CHANGE]"  # Change to "nitter-redis" if using docker-compose
+redisPort = [REDIS_PORT_PLZ_CHANGE]
+redisPassword = "[REDIS_PASSWORD_PLZ_CHANGE]"
 redisConnections = 20  # minimum open connections in pool
 redisMaxConnections = 30
 # new connections are opened when none are available, but if the pool size
@@ -59,6 +62,11 @@ def main() -> str:
     if os.getenv("FLY_APP_NAME"):
         hostname = f"{os.getenv('FLY_APP_NAME')}.fly.dev"
     
+    # redis connection info
+    redis_host = os.getenv("REDIS_HOST", "localhost")
+    redis_port = os.getenv("REDIS_PORT", "6379")
+    redis_password = os.getenv("REDIS_PASSWORD", "")
+
     # other customizations
     title = os.getenv("INSTANCE_TITLE", "My Nitter instance")
     theme = os.getenv("INSTANCE_THEME", "Nitter")
@@ -66,6 +74,9 @@ def main() -> str:
 
     return TEMPLATE \
         .replace(HOSTNAME_PLZ_CHANGE, hostname) \
+        .replace(REDIS_HOST_PLZ_CHANGE, redis_host) \
+        .replace(REDIS_PORT_PLZ_CHANGE, redis_port) \
+        .replace(REDIS_PASSWORD_PLZ_CHANGE, redis_password) \
         .replace(TITLE_PLZ_CHANGE, title) \
         .replace(THEME_PLZ_CHANGE, theme) \
         .replace(INFINITE_SCROLL_PLZ_CHANGE, infinite_scroll)

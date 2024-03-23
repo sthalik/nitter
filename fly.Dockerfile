@@ -27,7 +27,6 @@ COPY --from=nim /src/nitter/nitter ./
 COPY --from=nim /src/nitter/public ./public
 COPY --from=overmind /root/go/bin/overmind ./
 # fly start
-COPY Procfile ./Procfile
 COPY scripts/ ./scripts/
 COPY scripts/assets/redis.conf ./redis.conf
 COPY scripts/assets/nginx.conf /etc/nginx/nginx.conf

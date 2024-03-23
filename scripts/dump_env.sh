@@ -9,6 +9,11 @@ echo DEBUG=$DEBUG >> /src/.env
 echo Dumping custom path env...
 echo NITTER_ACCOUNTS_FILE=$NITTER_ACCOUNTS_FILE >> /src/.env
 
+echo Dumping redis connection env...
+echo REDIS_HOST=$REDIS_HOST >> /src/.env
+echo REDIS_PORT=$REDIS_PORT >> /src/.env
+echo REDIS_PASSWORD=$REDIS_PASSWORD >> /src/.env
+
 echo Dumping instance customization env...
 echo FLY_APP_NAME=$FLY_APP_NAME >> /src/.env
 echo INSTANCE_TITLE=$INSTANCE_TITLE >> /src/.env
@@ -19,3 +24,16 @@ echo Dumping instance guardian env...
 echo INSTANCE_RSS_PASSWORD=$INSTANCE_RSS_PASSWORD >> /src/.env
 echo INSTANCE_WEB_USERNAME=$INSTANCE_WEB_USERNAME >> /src/.env
 echo INSTANCE_WEB_PASSWORD=$INSTANCE_WEB_PASSWORD >> /src/.env
+
+echo Writing Procfile...
+
+echo "web: /src/scripts/fly.sh" > /src/Procfile
+
+if [ "$DISABLE_REDIS" != "1" ]; then
+  echo "redis: /src/scripts/redis.sh" >> /src/Procfile
+fi
+echo DISABLE_REDIS=$DISABLE_REDIS >> /src/.env
+
+if [ "$DISABLE_NGINX" != "1" ]; then
+  echo "nginx: /src/scripts/nginx.sh" >> /src/Procfile
+fi
