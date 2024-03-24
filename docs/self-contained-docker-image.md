@@ -15,23 +15,24 @@ In addition to the [regular Nitter docker image](https://github.com/sekai-soft/n
     * This is regardless whether you wish to enable Redis. The volume is needed to persist Twitter authetication info even if Redis is disabled.
 * Specify environment variables
 
-| Key                      | Required | Comment                                                                                                                                                                   |
-| ------------------------ | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| NITTER_ACCOUNTS_FILE     | Yes      | `/nitter-data/guest_accounts.json`                                                                                                                                        |
-| TWITTER_USERNAME         | Yes      | Burner Twitter account username                                                                                                                                           |
-| TWITTER_PASSWORD         | Yes      | Burner Twitter account password                                                                                                                                           |
-| DISABLE_REDIS            | No       | Use `1` to disable the built-in Redis. You should ensure an external Redis instance is ready to connect before launching the container                                    |
-| REDIS_HOST               | No       | Hostname for the Redis instance to connect to. Probably required if using an external Redis instance. Defaults to `localhost`.                                                                    |
-| REDIS_PORT               | No       | Port for the Redis instance to connect to. Probably required if using an external Redis instance. Defaults to `6379`.                                                                        |
-| REDIS_PASSWORD           | No       | Password for the Redis instance to connect to. Probably required if using an external Redis instance. Defaults to empty string.                                                                    |
-| DISABLE_NGINX            | No       | Use `1` to disable the built-in Nginx. **Strongly discouraged if the container is exposed to the Internet.**                                                              |
+| Key                      | Required | Comment                                                                                                                                                                            |
+| ------------------------ | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| NITTER_ACCOUNTS_FILE     | Yes      | `/nitter-data/guest_accounts.json`                                                                                                                                                 |
+| TWITTER_USERNAME         | Yes      | Burner Twitter account username                                                                                                                                                    |
+| TWITTER_PASSWORD         | Yes      | Burner Twitter account password                                                                                                                                                    |
+| DISABLE_REDIS            | No       | Use `1` to disable the built-in Redis. You should ensure an external Redis instance is ready to connect before launching the container                                             |
+| REDIS_HOST               | No       | Hostname for the Redis instance to connect to. Probably required if using an external Redis instance. Defaults to `localhost`.                                                     |
+| REDIS_PORT               | No       | Port for the Redis instance to connect to. Probably required if using an external Redis instance. Defaults to `6379`.                                                              |
+| REDIS_PASSWORD           | No       | Password for the Redis instance to connect to. Probably required if using an external Redis instance. Defaults to empty string.                                                    |
+| DISABLE_NGINX            | No       | Use `1` to disable the built-in Nginx. **Strongly discouraged if the container is exposed to the Internet.**                                                                       |
 | INSTANCE_RSS_PASSWORD    | No       | If the built-in Nginx is not disabled, required password used to protect all `/rss` paths. In order to access them you need to specify a `.../rss?key=<password>` query parameter. |
 | INSTANCE_WEB_USERNAME    | No       | If the built-in Nginx is not disabled, required basic auth username to protect all non-rss web UIs.                                                                                |
 | INSTANCE_WEB_PASSWORD    | No       | If the built-in Nginx is not disabled, required basic auth password to protect all non-rss web UIs.                                                                                |
-| INSTANCE_TITLE           | No       | Name of your Nitter instance shown on the web UI. Defaults to `My Nitter instance`.                                                                                                                        |
-| INSTANCE_THEME           | No       | Default theme of the web UI. Available options are `Black`, `Dracula`, `Mastodon`, `Nitter`, `Pleroma`, `Twitter` and `Twitter Dark`. Defaults to `Nitter`.                                    |
-| INSTANCE_INFINITE_SCROLL | No       | Use `1` to enable infinite scrolling. Enabling this option will load Javascript on the web UI.                                                                            |
-| INSTANCE_HOSTNAME        | No       |  The hostname used to render public-facing URLs such as hyperlinks in RSS feeds. Defaults to `localhost:8080`. |
+| INSTANCE_BASE64_MEDIA    | No       | Use `1` to enable base64-encoded media.                                                                                                                                            |
+| INSTANCE_TITLE           | No       | Name of your Nitter instance shown on the web UI. Defaults to `My Nitter instance`.                                                                                                |
+| INSTANCE_THEME           | No       | Default theme of the web UI. Available options are `Black`, `Dracula`, `Mastodon`, `Nitter`, `Pleroma`, `Twitter` and `Twitter Dark`. Defaults to `Nitter`.                        |
+| INSTANCE_INFINITE_SCROLL | No       | Use `1` to enable infinite scrolling. Enabling this option will load Javascript on the web UI.                                                                                     |
+| INSTANCE_HOSTNAME        | No       | The hostname used to render public-facing URLs such as hyperlinks in RSS feeds. Defaults to `localhost:8080`.                                                                      |
 
 * After the container is up, Nitter is available at port 8081 within the container if Nginx is enabled, and at port 8080 within the container if Nginx is disabled.
 

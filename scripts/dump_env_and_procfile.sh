@@ -17,6 +17,7 @@ echo REDIS_PASSWORD=$REDIS_PASSWORD >> /src/.env
 echo Dumping instance customization env...
 echo FLY_APP_NAME=$FLY_APP_NAME >> /src/.env
 echo INSTANCE_HOSTNAME=$INSTANCE_HOSTNAME >> /src/.env
+echo INSTANCE_BASE64_MEDIA=$INSTANCE_BASE64_MEDIA >> /src/.env
 echo INSTANCE_TITLE=$INSTANCE_TITLE >> /src/.env
 echo INSTANCE_THEME=$INSTANCE_THEME >> /src/.env
 echo INSTANCE_INFINITE_SCROLL=$INSTANCE_INFINITE_SCROLL >> /src/.env

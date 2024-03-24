@@ -72,6 +72,12 @@ flyctl secrets set --detach INSTANCE_THEME=<your instance default theme>
 flyctl secrets set --detach INSTANCE_INFINITE_SCROLL=1
 ```
 
+* Optional: Whether to enable base64-encoded media.
+
+```
+flyctl secrets set --detach INSTANCE_BASE64_MEDIA=1
+```
+
 6. Deploy the fly.io app
 ```
 flyctl deploy

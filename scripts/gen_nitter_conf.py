@@ -7,6 +7,7 @@ TITLE_PLZ_CHANGE = "[TITLE_PLZ_CHANGE]"
 REDIS_HOST_PLZ_CHANGE = "[REDIS_HOST_PLZ_CHANGE]"
 REDIS_PORT_PLZ_CHANGE = "[REDIS_PORT_PLZ_CHANGE]"
 REDIS_PASSWORD_PLZ_CHANGE = "[REDIS_PASSWORD_PLZ_CHANGE]"
+BASE64_MEDIA_PLZ_CHANGE = "[BASE64_MEDIA_PLZ_CHANGE]"
 THEME_PLZ_CHANGE = "[THEME_PLZ_CHANGE]"
 INFINITE_SCROLL_PLZ_CHANGE = "[INFINITE_SCROLL_PLZ_CHANGE]"
 
@@ -33,7 +34,7 @@ redisMaxConnections = 30
 
 [Config]
 hmacKey = "secretkey"  # random key for cryptographic signing of video urls
-base64Media = false  # use base64 encoding for proxied media urls
+base64Media = [BASE64_MEDIA_PLZ_CHANGE]  # use base64 encoding for proxied media urls
 enableRSS = true  # set this to false to disable RSS feeds
 enableDebug = false  # enable request logs and debug endpoints (/.accounts)
 proxy = ""  # http/https url, SOCKS proxies are not supported
@@ -78,6 +79,7 @@ def main() -> str:
     redis_password = getenv_treat_empty_string_as_none("REDIS_PASSWORD", "")
 
     # other customizations
+    base64_media = "true" if os.getenv("INSTANCE_BASE64_MEDIA") == "1" else "false"
     title = getenv_treat_empty_string_as_none("INSTANCE_TITLE", "My Nitter instance")
     theme = getenv_treat_empty_string_as_none("INSTANCE_THEME", "Nitter")
     infinite_scroll = "true" if os.getenv("INSTANCE_INFINITE_SCROLL") == "1" else "false"
@@ -87,6 +89,7 @@ def main() -> str:
         .replace(REDIS_HOST_PLZ_CHANGE, redis_host) \
         .replace(REDIS_PORT_PLZ_CHANGE, redis_port) \
         .replace(REDIS_PASSWORD_PLZ_CHANGE, redis_password) \
+        .replace(BASE64_MEDIA_PLZ_CHANGE, base64_media) \
         .replace(TITLE_PLZ_CHANGE, title) \
         .replace(THEME_PLZ_CHANGE, theme) \
         .replace(INFINITE_SCROLL_PLZ_CHANGE, infinite_scroll)
