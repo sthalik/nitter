@@ -4,6 +4,7 @@ import sys
 
 HOSTNAME_PLZ_CHANGE = "[HOSTNAME_PLZ_CHANGE]"
 TITLE_PLZ_CHANGE = "[TITLE_PLZ_CHANGE]"
+PORT_PLZ_CHANGE = "[PORT_PLZ_CHANGE]"
 REDIS_HOST_PLZ_CHANGE = "[REDIS_HOST_PLZ_CHANGE]"
 REDIS_PORT_PLZ_CHANGE = "[REDIS_PORT_PLZ_CHANGE]"
 REDIS_PASSWORD_PLZ_CHANGE = "[REDIS_PASSWORD_PLZ_CHANGE]"
@@ -15,7 +16,7 @@ TEMPLATE = """[Server]
 hostname = "[HOSTNAME_PLZ_CHANGE]"  # for generating links, change this to your own domain/ip
 title = "[TITLE_PLZ_CHANGE]"
 address = "0.0.0.0"
-port = 8080
+port = [PORT_PLZ_CHANGE]
 https = false  # disable to enable cookies when not using https
 httpMaxConnections = 100
 staticDir = "./public"
@@ -66,8 +67,11 @@ def getenv_treat_empty_string_as_none(key: str, default: str) -> str:
 
 
 def main() -> str:
+    # port
+    port = getenv_treat_empty_string_as_none("PORT", "8080")
+
     # hostname
-    hostname = "localhost:8080"
+    hostname = f"localhost:{port}"
     if os.getenv("FLY_APP_NAME"):
         hostname = f"{os.getenv('FLY_APP_NAME')}.fly.dev"
     elif os.getenv("INSTANCE_HOSTNAME"):
@@ -86,6 +90,7 @@ def main() -> str:
 
     return TEMPLATE \
         .replace(HOSTNAME_PLZ_CHANGE, hostname) \
+        .replace(PORT_PLZ_CHANGE, port) \
         .replace(REDIS_HOST_PLZ_CHANGE, redis_host) \
         .replace(REDIS_PORT_PLZ_CHANGE, redis_port) \
         .replace(REDIS_PASSWORD_PLZ_CHANGE, redis_password) \

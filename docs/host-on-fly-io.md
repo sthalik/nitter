@@ -23,60 +23,31 @@ When prompted "Would you like to copy its configuration to the new app?", answer
 When prompted "Do you want to tweak these settings before proceeding?", answer `N` (no)
 
 5. Customize your Nitter instance
+In order to customize your Nitter instance, you need to set some environment variables for the fly.io app.
 
-* **Required:** Burner/temporary Twitter account username
+Here is how to set up an environment variable for the fly.io app:
+
+```
+flyctl secrets set --detach <environment variable key>=<environment variable value>
+```
+
+Here is a list of **required** environment variables for the fly.io app
+
+* `TWITTER_USERNAME`
+* `TWITTER_PASSWORD`
+* `INSTANCE_RSS_PASSWORD`
+* `INSTANCE_WEB_USERNAME`
+* `INSTANCE_WEB_PASSWORD`
+
+Consult [this table](https://github.com/sekai-soft/nitter/blob/master/docs/self-contained-docker-image.md#how-to-use) for what each environment variable means and set each one up
+
+For example, to set up `TWITTER_USERNAME`, you would do
 
 ```
 flyctl secrets set --detach TWITTER_USERNAME=<your twitter account username>
 ```
 
-* **Required:** Burner/temporary Twitter account password
-
-```
-flyctl secrets set --detach TWITTER_PASSWORD=<your twitter account password>
-```
-
-* **Required:** RSS password
-
-```
-flyctl secrets set --detach INSTANCE_RSS_PASSWORD=<your rss password>
-```
-
-* **Required:** Web UI username
-
-```
-flyctl secrets set --detach INSTANCE_WEB_USERNAME=<your web ui username>
-```
-
-* **Required:** Web UI password
-
-```
-flyctl secrets set --detach INSTANCE_WEB_PASSWORD=<your web ui password>
-```
-
-* Optional: Name of your Nitter instance shown on the web UI
-
-```
-flyctl secrets set --detach INSTANCE_TITLE=<your instance title>
-```
-
-* Optional: Default theme of the web UI. Available options are `Black`, `Dracula`, `Mastodon`, `Nitter`, `Pleroma`, `Twitter` and `Twitter Dark`.
-
-```
-flyctl secrets set --detach INSTANCE_THEME=<your instance default theme>
-```
-
-* Optional: Whether to enable infinite scrolling. Enabling this option will load Javascript on the web UI.
-
-```
-flyctl secrets set --detach INSTANCE_INFINITE_SCROLL=1
-```
-
-* Optional: Whether to enable base64-encoded media.
-
-```
-flyctl secrets set --detach INSTANCE_BASE64_MEDIA=1
-```
+[The table](https://github.com/sekai-soft/nitter/blob/master/docs/self-contained-docker-image.md#how-to-use) also contains several customization options such as instance title and instance default theme that you might be interested in.
 
 6. Deploy the fly.io app
 ```
