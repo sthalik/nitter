@@ -29,7 +29,7 @@ In addition to the [regular Nitter docker image](https://github.com/sekai-soft/n
 | INSTANCE_WEB_USERNAME    | No       | If the built-in Nginx is not disabled, required basic auth username to protect all non-rss web UIs.                                                                                |
 | INSTANCE_WEB_PASSWORD    | No       | If the built-in Nginx is not disabled, required basic auth password to protect all non-rss web UIs.                                                                                |
 | INSTANCE_BASE64_MEDIA    | No       | Use `1` to enable base64-encoded media.                                                                                                                                            |
-| PORT                     | No       | Port that your Nitter instance binds to. Default to `8080`                                                                                                                         |
+| INSTANCE_PORT            | No       | Port that your Nitter instance binds to. Default to `8080`                                                                                                                         |
 | INSTANCE_TITLE           | No       | Name of your Nitter instance shown on the web UI. Defaults to `My Nitter instance`.                                                                                                |
 | INSTANCE_THEME           | No       | Default theme of the web UI. Available options are `Black`, `Dracula`, `Mastodon`, `Nitter`, `Pleroma`, `Twitter` and `Twitter Dark`. Defaults to `Nitter`.                        |
 | INSTANCE_INFINITE_SCROLL | No       | Use `1` to enable infinite scrolling. Enabling this option will load Javascript on the web UI.                                                                                     |
@@ -42,3 +42,23 @@ In addition to the [regular Nitter docker image](https://github.com/sekai-soft/n
 * `/src/scripts/dump_env_and_procfile.sh` was needed before `overmind` can execute
     * `dump_env_and_procfile.sh` writes the `Procfile` of course
     * `dump_env_and_procfile.sh` also writes expected environment variables to `.env` because `overmind` does not seem to inherit environment so [it had to be an `.env` file](https://github.com/DarthSim/overmind?tab=readme-ov-file#overmind-environment)
+
+#### Development of the self-contained docker image
+1. You need a `.env` file with the following
+
+```
+TWITTER_USERNAME=
+TWITTER_PASSWORD=
+INSTANCE_RSS_PASSWORD=
+INSTANCE_WEB_USERNAME=
+INSTANCE_WEB_PASSWORD=
+```
+
+2. Run
+
+```
+docker compose -f docker-compose.self-contained.yml build
+docker compose -f docker-compose.self-contained.yml up
+```
+
+3. Access the password protected Nitter instance at [`localhost:8081`](http://localhost:8081/)

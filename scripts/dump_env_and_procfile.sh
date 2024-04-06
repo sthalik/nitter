@@ -15,7 +15,7 @@ echo REDIS_PORT=$REDIS_PORT >> /src/.env
 echo REDIS_PASSWORD=$REDIS_PASSWORD >> /src/.env
 
 echo Dumping instance customization env...
-echo PORT=$PORT >> /src/.env
+echo INSTANCE_PORT=$INSTANCE_PORT >> /src/.env
 echo FLY_APP_NAME=$FLY_APP_NAME >> /src/.env
 echo INSTANCE_HOSTNAME=$INSTANCE_HOSTNAME >> /src/.env
 echo INSTANCE_BASE64_MEDIA=$INSTANCE_BASE64_MEDIA >> /src/.env

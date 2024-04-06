@@ -68,7 +68,7 @@ def getenv_treat_empty_string_as_none(key: str, default: str) -> str:
 
 def main() -> str:
     # port
-    port = getenv_treat_empty_string_as_none("PORT", "8080")
+    port = getenv_treat_empty_string_as_none("INSTANCE_PORT", "8080")
 
     # hostname
     hostname = f"localhost:{port}"
