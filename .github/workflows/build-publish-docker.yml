@@ -44,8 +44,6 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           platforms: linux/amd64
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
       - name: Build and push Docker image for self-contained variant
         uses: docker/build-push-action@v2
         with:
@@ -81,8 +79,6 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           platforms: linux/arm64
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
       - name: Build and push Docker image for self-contained variant
         uses: docker/build-push-action@v2
         with:
