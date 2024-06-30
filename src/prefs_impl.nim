@@ -50,6 +50,11 @@ macro genPrefs*(prefDsl: untyped) =
     const `name`*: PrefList = toOrderedTable(`table`)
 
 genPrefs:
+  Timeline:
+    following(input, ""):
+      "A comma-separated list of users to follow."
+      placeholder: "taskylizard,vercel,nodejs"
+
   Display:
     theme(select, "Nitter"):
       "Theme"
@@ -106,6 +111,14 @@ genPrefs:
     replaceReddit(input, ""):
       "Reddit -> Teddit/Libreddit"
       placeholder: "Teddit hostname"
+
+    replaceImgur(input, ""):
+      "Imgur -> Rimgo"
+      placeholder: "Rimgo hostname"
+
+    replaceMedium(input, ""):
+      "Medium -> Scribe"
+      placeholder: "Scribe hostname"
 
 iterator allPrefs*(): Pref =
   for k, v in prefList:
