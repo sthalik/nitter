@@ -7,7 +7,6 @@ import sys
 import os
 import logging
 from typing import Optional
-from dataclasses import dataclass
 
 
 logging.basicConfig()
@@ -22,13 +21,13 @@ TW_ANDROID_BASIC_TOKEN = 'Basic {token}'.format(token=base64.b64encode(
 logging.debug("TW_ANDROID_BASIC_TOKEN=" + TW_ANDROID_BASIC_TOKEN)
 
 
-def auth(username: str, password: str) -> Optional[dict]:
+def auth(username: str, password: str, mfa_code: Optional[str]) -> Optional[dict]:
     logging.debug("start auth")
 
     bearer_token_req = requests.post("https://api.twitter.com/oauth2/token",
         headers={
-        'Authorization': TW_ANDROID_BASIC_TOKEN,
-        "Content-Type": "application/x-www-form-urlencoded",
+            'Authorization': TW_ANDROID_BASIC_TOKEN,
+            "Content-Type": "application/x-www-form-urlencoded",
         },
         data='grant_type=client_credentials'
     ).json()
@@ -131,8 +130,32 @@ def auth(username: str, password: str) -> Optional[dict]:
     ).json()
 
     for t4_subtask in task4.get('subtasks', []):
-        if 'open_account' in t4_subtask:
-            return t4_subtask['open_account']
+        if "open_account" in t4_subtask:
+            return t4_subtask["open_account"]
+        elif "enter_text" in t4_subtask:
+            response_text = t4_subtask["enter_text"]["hint_text"]
+            print(f"Requested '{response_text}'")
+            task5 = session.post(
+                "https://api.twitter.com/1.1/onboarding/task.json",
+                json={
+                    "flow_token": task4.get("flow_token"),
+                    "subtask_inputs": [
+                        {
+                            "enter_text": {
+                                "suggestion_id": None,
+                                "text": mfa_code,
+                                "link": "next_link",
+                            },
+                            # was previously LoginAcid
+                            "subtask_id": "LoginTwoFactorAuthChallenge",
+                        }
+                    ],
+                },
+                headers=twitter_header,
+            ).json()
+            for t5_subtask in task5.get("subtasks", []):
+                if "open_account" in t5_subtask:
+                    return t5_subtask["open_account"]
 
     return None
 
@@ -183,11 +206,12 @@ if __name__ == "__main__":
     if not password:
         print("Please set environment variable TWITTER_PASSWORD")
         sys.exit(1)
+    mfa_code = os.getenv("TWITTER_MFA_CODE", None)
 
-    auth_res = auth(username, password)
+    auth_res = auth(username, password, mfa_code)
 
     if auth_res is None:
-        print("Failed authentication. You might have entered the wrong username/password or enabled MFA. Please rerun with environment variable DEBUG=1 for debugging.")
+        print("Failed authentication. You might have entered the wrong username/password. Please rerun with environment variable DEBUG=1 for debugging.")
         sys.exit(1)
     with open(output_file, "w") as f:
         f.write(json.dumps([auth_res]))
