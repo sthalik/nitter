@@ -34,6 +34,7 @@ In addition to the [regular Nitter docker image](https://github.com/sekai-soft/n
 | INSTANCE_THEME           | No       | Default theme of the web UI. Available options are `Black`, `Dracula`, `Mastodon`, `Nitter`, `Pleroma`, `Twitter` and `Twitter Dark`. Defaults to `Nitter`.                        |
 | INSTANCE_INFINITE_SCROLL | No       | Use `1` to enable infinite scrolling. Enabling this option will load Javascript on the web UI.                                                                                     |
 | INSTANCE_HOSTNAME        | No       | The hostname used to render public-facing URLs such as hyperlinks in RSS feeds. Defaults to `localhost:8080`.                                                                      |
+| INSTANCE_HTTPS           | No       | Use `1` to enable serving https traffic.                                                                                                                                           |
 
 * After the container is up, Nitter is available at port 8081 within the container if Nginx is enabled, and at port 8080 within the container if Nginx is disabled.
 

@@ -5,6 +5,7 @@ import sys
 HOSTNAME_PLZ_CHANGE = "[HOSTNAME_PLZ_CHANGE]"
 TITLE_PLZ_CHANGE = "[TITLE_PLZ_CHANGE]"
 PORT_PLZ_CHANGE = "[PORT_PLZ_CHANGE]"
+HTTPS_PLZ_CHANGE = "[HTTPS_PLZ_CHANGE]"
 REDIS_HOST_PLZ_CHANGE = "[REDIS_HOST_PLZ_CHANGE]"
 REDIS_PORT_PLZ_CHANGE = "[REDIS_PORT_PLZ_CHANGE]"
 REDIS_PASSWORD_PLZ_CHANGE = "[REDIS_PASSWORD_PLZ_CHANGE]"
@@ -17,7 +18,7 @@ hostname = "[HOSTNAME_PLZ_CHANGE]"  # for generating links, change this to your 
 title = "[TITLE_PLZ_CHANGE]"
 address = "0.0.0.0"
 port = [PORT_PLZ_CHANGE]
-https = false  # disable to enable cookies when not using https
+https = [HTTPS_PLZ_CHANGE]  # disable to enable cookies when not using https
 httpMaxConnections = 100
 staticDir = "./public"
 
@@ -83,6 +84,7 @@ def main() -> str:
     redis_password = getenv_treat_empty_string_as_none("REDIS_PASSWORD", "")
 
     # other customizations
+    https = "true" if os.getenv("INSTANCE_HTTPS") == "1" else "false"
     base64_media = "true" if os.getenv("INSTANCE_BASE64_MEDIA") == "1" else "false"
     title = getenv_treat_empty_string_as_none("INSTANCE_TITLE", "My Nitter instance")
     theme = getenv_treat_empty_string_as_none("INSTANCE_THEME", "Nitter")
@@ -91,6 +93,7 @@ def main() -> str:
     return TEMPLATE \
         .replace(HOSTNAME_PLZ_CHANGE, hostname) \
         .replace(PORT_PLZ_CHANGE, port) \
+        .replace(HTTPS_PLZ_CHANGE, https) \
         .replace(REDIS_HOST_PLZ_CHANGE, redis_host) \
         .replace(REDIS_PORT_PLZ_CHANGE, redis_port) \
         .replace(REDIS_PASSWORD_PLZ_CHANGE, redis_password) \
