@@ -42,16 +42,15 @@ def auth(username: str, password: str, mfa_code: Optional[str]) -> Optional[dict
     twitter_header = {
         'Authorization': bearer_token,
         "Content-Type": "application/json",
-        "User-Agent":
-            "TwitterAndroid/9.95.0-release.0 (29950000-r-0) ONEPLUS+A3010/9 (OnePlus;ONEPLUS+A3010;OnePlus;OnePlus3;0;;1;2016)",
+        "User-Agent": "TwitterAndroid/10.21.0-release.0 (310210000-r-0) ONEPLUS+A3010/9 (OnePlus;ONEPLUS+A3010;OnePlus;OnePlus3;0;;1;2016)",
         "X-Twitter-API-Version": '5',
         "X-Twitter-Client": "TwitterAndroid",
-        "X-Twitter-Client-Version": "9.95.0-release.0",
+        "X-Twitter-Client-Version": "10.21.0-release.0",
         "OS-Version": "28",
-        "System-User-Agent":
-            "Dalvik/2.1.0 (Linux; U; Android 9; ONEPLUS A3010 Build/PKQ1.181203.001)",
+        "System-User-Agent": "Dalvik/2.1.0 (Linux; U; Android 9; ONEPLUS A3010 Build/PKQ1.181203.001)",
         "X-Twitter-Active-User": "yes",
         "X-Guest-Token": guest_token,
+        "X-Twitter-Client-DeviceID": ""
     }
 
     session = requests.Session()
@@ -82,6 +81,7 @@ def auth(username: str, password: str, mfa_code: Optional[str]) -> Optional[dict
         },
         headers=twitter_header
     )
+    logging.debug("task1 res=" + str(task1.json()))
 
     session.headers['att'] = task1.headers.get('att')
     task2 = session.post('https://api.twitter.com/1.1/onboarding/task.json', 
@@ -99,6 +99,7 @@ def auth(username: str, password: str, mfa_code: Optional[str]) -> Optional[dict
         },
         headers=twitter_header
     )
+    logging.debug("task2 res=" + str(task2.json()))
 
     task3 = session.post('https://api.twitter.com/1.1/onboarding/task.json', 
         json={
@@ -114,31 +115,18 @@ def auth(username: str, password: str, mfa_code: Optional[str]) -> Optional[dict
         },
         headers=twitter_header
     )
+    logging.debug("task3 res=" + str(task3.json()))
 
-    task4 = session.post('https://api.twitter.com/1.1/onboarding/task.json', 
-        json={
-            "flow_token": task3.json().get('flow_token'),
-            "subtask_inputs": [{
-                    "check_logged_in_account": {
-                        "link": "AccountDuplicationCheck_false"
-                    },
-                    "subtask_id": "AccountDuplicationCheck"
-                }
-            ]
-        },
-        headers=twitter_header
-    ).json()
-
-    for t4_subtask in task4.get('subtasks', []):
-        if "open_account" in t4_subtask:
-            return t4_subtask["open_account"]
-        elif "enter_text" in t4_subtask:
-            response_text = t4_subtask["enter_text"]["hint_text"]
+    for t3_subtask in task3.json().get('subtasks', []):
+        if "open_account" in t3_subtask:
+            return t3_subtask["open_account"]
+        elif "enter_text" in t3_subtask:
+            response_text = t3_subtask["enter_text"]["hint_text"]
             print(f"Requested '{response_text}'")
-            task5 = session.post(
+            task4 = session.post(
                 "https://api.twitter.com/1.1/onboarding/task.json",
                 json={
-                    "flow_token": task4.get("flow_token"),
+                    "flow_token": task3.json().get("flow_token"),
                     "subtask_inputs": [
                         {
                             "enter_text": {
@@ -153,9 +141,9 @@ def auth(username: str, password: str, mfa_code: Optional[str]) -> Optional[dict
                 },
                 headers=twitter_header,
             ).json()
-            for t5_subtask in task5.get("subtasks", []):
-                if "open_account" in t5_subtask:
-                    return t5_subtask["open_account"]
+            for t4_subtask in task4.get("subtasks", []):
+                if "open_account" in t4_subtask:
+                    return t4_subtask["open_account"]
 
     return None
 
@@ -211,7 +199,7 @@ if __name__ == "__main__":
     auth_res = auth(username, password, mfa_code)
 
     if auth_res is None:
-        print("Failed authentication. You might have entered the wrong username/password. Please rerun with environment variable DEBUG=1 for debugging.")
+        print("Failed authentication. You might have entered the wrong username/password. Please rerun with environment variable DEBUG=1 for debugging, e.g. docker compose -e DEBUG=1 run.")
         sys.exit(1)
     with open(output_file, "w") as f:
         f.write(json.dumps([auth_res]))
