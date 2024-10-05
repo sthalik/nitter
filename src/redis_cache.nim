@@ -164,7 +164,8 @@ proc getCachedPhotoRail*(name: string): Future[PhotoRail] {.async.} =
   if rail != redisNil:
     rail.deserialize(PhotoRail)
   else:
-    result = await getPhotoRail(name)
+    let userId = await getUserId(name)
+    result = await getPhotoRail(userId)
     await cache(result, name)
 
 proc getCachedList*(username=""; slug=""; id=""): Future[List] {.async.} =
