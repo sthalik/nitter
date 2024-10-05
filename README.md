@@ -174,15 +174,6 @@ WantedBy=multi-user.target
 Then enable and run the service:
 `systemctl enable --now nitter.service`
 
-### fly.io
-You can also host a Nitter instance on fly.io.
-
-With the fly.io setup, you will get a personal, password-protected Nitter instance on the Internet.
-
-Although fly.io is a paid platform, the setup uses as minimal as possible resources and your usage should fall into their free tier as long as you keep it just for personal usage.
-
-[Guide](./docs/host-on-fly-io.md)
-
 ### Logging
 
 Nitter currently prints some errors to stdout, and there is no real logging
