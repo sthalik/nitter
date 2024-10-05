@@ -32,8 +32,8 @@ services:
       # - REDIS_PORT=6379
       # - REDIS_PASSWORD=
       # optional debugging flags
-      # - DEBUG=1
-      # - RESET_NITTER_ACCOUNTS_FILE=1
+      - DEBUG=1
+      - RESET_NITTER_ACCOUNTS_FILE=1
     env_file:
       # should require from env
       # TWITTER_USERNAME
