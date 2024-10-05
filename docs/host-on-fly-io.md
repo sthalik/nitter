@@ -13,7 +13,7 @@ Create an empty `fly.toml` file and copy contents from [this file](https://githu
 
 4. Create a fly.io app (not deployed yet)
 ```
-flyctl launch --no-deploy
+cd nitter && flyctl launch --no-deploy
 ```
 
 When prompted "Would you like to copy its configuration to the new app?", answer `y` (yes)
