@@ -8,10 +8,8 @@ Notice: Since deploying to fly.io exposes the Nitter instance to the Internet, t
 
 2. [Sign up and sign in using flyctl](https://fly.io/docs/hands-on/sign-up-sign-in/)
 
-3. Clone this repo to your computer.
-```
-git clone https://github.com/sekai-soft/nitter.git && cd nitter
-```
+3. Create a `nitter` folder and create a `fly.toml` file inside it.
+Create an empty `fly.toml` file and copy contents from [this file](https://github.com/sekai-soft/nitter/blob/master/fly.toml)
 
 4. Create a fly.io app (not deployed yet)
 ```
