@@ -66,5 +66,8 @@ authenticated_web_ui_resp = requests.get(web_ui_url, auth=(username, password))
 assert authenticated_web_ui_resp.status_code == 200
 assert authenticated_web_ui_resp.text != ""
 
+# Export logs
+os.system("docker compose -f docker-compose.self-contained.yml logs > self-contained-test.logs")
+
 # Stop the docker compose stack
 os.system("docker compose -f docker-compose.self-contained.yml down")

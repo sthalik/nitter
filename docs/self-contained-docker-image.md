@@ -69,4 +69,4 @@ docker compose -f docker-compose.self-contained.yml up --build
 
 3. Access the password protected Nitter instance at [`localhost:8081`](http://localhost:8081/)
 
-4. Run integration test `make test`
+4. Run integration test `make test`. Docker compose stack logs are exported to `self-contained-test.logs` after the test is run.
