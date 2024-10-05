@@ -22,7 +22,7 @@ logging.debug("TW_ANDROID_BASIC_TOKEN=" + TW_ANDROID_BASIC_TOKEN)
 
 
 def auth(username: str, password: str, mfa_code: Optional[str]) -> Optional[dict]:
-    logging.debug("start auth")
+    logging.debug(f"start authenticating @{username}")
 
     bearer_token_req = requests.post("https://api.twitter.com/oauth2/token",
         headers={
@@ -163,11 +163,12 @@ def parse_auth_file(auth_file: str) -> bool:
         return False
     for i, r in enumerate(res):
         if "oauth_token" not in r:
-            logging.error(f"Expecting 'oauth_token' in auth item #{i}")
+            logging.error(f"Expecting 'oauth_token' in auth item #{i + 1}")
             return False
         if "oauth_token_secret" not in r:
-            logging.error(f"Expecting 'oauth_token_secret' in auth item #{i}")
+            logging.error(f"Expecting 'oauth_token_secret' in auth item #{i + 1}")
             return False
+    logging.debug(f"There are {len(res)} accounts")
     return True
 
 
@@ -177,6 +178,11 @@ if __name__ == "__main__":
         sys.exit(1)
 
     output_file = sys.argv[1]
+
+    if os.getenv("RESET_NITTER_ACCOUNTS_FILE", "0") == "1" and os.path.exists(output_file):
+        print(f"Resetting auth file {output_file}")
+        os.remove(output_file)
+
     if os.path.exists(output_file):
         print(f"Validating auth file {output_file}")
         if parse_auth_file(output_file):
@@ -186,21 +192,41 @@ if __name__ == "__main__":
             print(f"Auth file {output_file} is invalid. Please remove and rerun.")
             sys.exit(1)
 
-    username = os.getenv("TWITTER_USERNAME")
-    if not username:
-        print("Please set environment variable TWITTER_USERNAME")
-        sys.exit(1)
-    password = os.getenv("TWITTER_PASSWORD")
-    if not password:
-        print("Please set environment variable TWITTER_PASSWORD")
-        sys.exit(1)
-    mfa_code = os.getenv("TWITTER_MFA_CODE", None)
+    twitter_credentials_file = os.getenv("TWITTER_CREDENTIALS_FILE", None)
+    username = os.getenv("TWITTER_USERNAME", None)
+    password = os.getenv("TWITTER_PASSWORD", None)
 
-    auth_res = auth(username, password, mfa_code)
-
-    if auth_res is None:
-        print("Failed authentication. You might have entered the wrong username/password. Please rerun with environment variable DEBUG=1 for debugging, e.g. docker compose -e DEBUG=1 run.")
+    if not twitter_credentials_file and not (username and password):
+        print("Please set environment variable TWITTER_CREDENTIALS_FILE, or both TWITTER_USERNAME and TWITTER_PASSWORD")
         sys.exit(1)
+
+    twitter_credentials = []
+    if twitter_credentials_file:
+        with open(twitter_credentials_file, "r") as f:
+            twitter_credentials = json.loads(f.read())
+    else:
+        mfa_code = os.getenv("TWITTER_MFA_CODE", None)
+        twitter_credentials = [{"username": username, "password": password, "mfa_code": mfa_code}]
+
+    auth_results = []
+    for credential in twitter_credentials:
+        username = credential["username"]
+        password = credential["password"]
+        mfa_code = credential.get("mfa_code", None)
+        auth_result = auth(username, password, mfa_code)
+        auth_results.append(auth_result)
+
+    if len(list(filter(lambda x: x is not None, auth_results))) == 0:
+        print("Failed authentication for any account. Did you enter the right username/password? Please rerun with environment variable DEBUG=1 for debugging, e.g. uncomment the DEBUG=1 in docker-compose.self-contained.yml file.")
+        sys.exit(1)
+
+    valid_auth_results = []
+    for i, auth_result in enumerate(auth_results):
+        if auth_result is None:
+            print(f"Failed authentication for account #{i}, but still proceeding.")
+        else:
+            valid_auth_results.append(auth_result)
+
     with open(output_file, "w") as f:
-        f.write(json.dumps([auth_res]))
+        f.write(json.dumps(valid_auth_results))
     print(f"Auth file {output_file} created successfully")

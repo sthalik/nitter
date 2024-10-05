@@ -4,6 +4,8 @@ set -e
 echo Dumping auth env...
 echo TWITTER_USERNAME=$TWITTER_USERNAME > /src/.env
 echo TWITTER_PASSWORD=$TWITTER_PASSWORD >> /src/.env
+echo TWITTER_CREDENTIALS_FILE=$TWITTER_CREDENTIALS_FILE >> /src/.env
+echo RESET_NITTER_ACCOUNTS_FILE=$RESET_NITTER_ACCOUNTS_FILE >> /src/.env
 echo DEBUG=$DEBUG >> /src/.env
 
 echo Dumping custom path env...
