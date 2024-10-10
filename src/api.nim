@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-only
+import options
 import asyncdispatch, httpclient, uri, strutils, sequtils, sugar
 import packedjson
 import types, query, formatters, consts, apiutils, parser
@@ -189,13 +190,21 @@ proc getGraphUserSearch*(query: Query; after=""): Future[Result[User]] {.async.}
   result = parseGraphSearch[User](await fetch(url, Api.search), after)
   result.query = query
 
-proc getPhotoRail*(name: string): Future[PhotoRail] {.async.} =
-  if name.len == 0: return
-  let
-    ps = genParams({"screen_name": name, "trim_user": "true"},
-                    count="18", ext=false)
-    url = photoRail ? ps
-  result = parsePhotoRail(await fetch(url, Api.photoRail))
+proc getPhotoRail*(id: string): Future[PhotoRail] {.async.} =
+  if id.len == 0: return
+  let mediaTweets = await getGraphUserTweets(id, TimelineKind.media)
+  
+  result = @[]
+  for thread in mediaTweets.tweets.content:
+    let
+      t = thread[0]
+      url = if t.photos.len > 0: t.photos[0]
+            elif t.video.isSome: get(t.video).thumb
+            elif t.gif.isSome: get(t.gif).thumb
+            elif t.card.isSome: get(t.card).image 
+            else: ""
+    if url.len == 0: continue
+    result.add GalleryPhoto(url: url, tweetId: $t.id)
 
 proc resolve*(url: string; prefs: Prefs): Future[string] {.async.} =
   let client = newAsyncHttpClient(maxRedirects=0)

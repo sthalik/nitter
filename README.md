@@ -192,6 +192,14 @@ this: `journalctl -u nitter.service` (add `--follow` to see just the last 15
 lines). If you're running the Docker image, you can do this:
 `docker logs --follow *nitter container id*`
 
+### Development in devcontainer
+```
+redis-server &  # start redis server in the background
+nimble scss  # compile scss
+nimble md  # compile doc
+nimble run  # access on localhost:8080
+```
+
 ## Contact
 
 Feel free to join our [Matrix channel](https://matrix.to/#/#nitter:matrix.org).

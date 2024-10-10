@@ -11,25 +11,6 @@ const
 
 var pool: HttpPool
 
-proc genParams*(pars: openArray[(string, string)] = @[]; cursor="";
-                count="20"; ext=true): seq[(string, string)] =
-  result = timelineParams
-  for p in pars:
-    result &= p
-  if ext:
-    result &= ("include_ext_alt_text", "1")
-    result &= ("include_ext_media_stats", "1")
-    result &= ("include_ext_media_availability", "1")
-  if count.len > 0:
-    result &= ("count", count)
-  if cursor.len > 0:
-    # The raw cursor often has plus signs, which sometimes get turned into spaces,
-    # so we need to turn them back into a plus
-    if " " in cursor:
-      result &= ("cursor", cursor.replace(" ", "+"))
-    else:
-      result &= ("cursor", cursor)
-
 proc getOauthHeader(url, oauthToken, oauthTokenSecret: string): string =
   let
     encodedUrl = url.replace(",", "%2C").replace("+", "%20")
@@ -144,7 +125,8 @@ template retry(bod) =
   try:
     bod
   except RateLimitError:
-    echo "[accounts] Rate limited, retrying ", api, " request..."
+    let currentTime = now().format("yyyy-MM-dd HH:mm:ss")
+    echo currentTime, " - [accounts] Rate limited, retrying ", api, " request..."
     bod
 
 proc fetch*(url: Uri; api: Api; additional_headers: HttpHeaders = newHttpHeaders()): Future[JsonNode] {.async.} =

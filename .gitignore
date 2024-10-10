@@ -11,3 +11,6 @@ nitter
 /public/md/*.html
 nitter.conf
 dump.rdb
+.env
+twitter-credentials.json
+self-contained-test.logs
